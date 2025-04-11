@@ -1,25 +1,14 @@
-
-# productivity_app/views.py
+# views.py
 from rest_framework import viewsets, permissions
 from .models import Category, Priority, TaskStatus, Task, UserProfile, Settings
 from .serializers import CategorySerializer, PrioritySerializer, TaskStatusSerializer, TaskSerializer, ProfileSerializer, UserSerializer, SettingsSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
-from rest_framework import status
+from rest_framework import status, viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
-
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
-
-
-class PriorityViewSet(viewsets.ModelViewSet):
-    queryset = Priority.objects.all()
-    serializer_class = PrioritySerializer
-    permission_classes = [IsAuthenticated]
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 
 
 class TaskStatusViewSet(viewsets.ModelViewSet):
@@ -35,6 +24,61 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        # Filter tasks to only return those owned by the authenticated user
+        return self.queryset.filter(owner=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            task = self.get_object()
+            if task.owner != request.user:
+                return Response({"detail": "You do not have permission to edit this task."}, status=status.HTTP_403_FORBIDDEN)
+            serializer = self.get_serializer(
+                task, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        except Http404:
+            return Response({"detail": "Task not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            task = self.get_object()
+            if task.owner != request.user:
+                return Response({"detail": "You do not have permission to delete this task."}, status=status.HTTP_403_FORBIDDEN)
+            self.perform_destroy(task)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Http404:
+            return Response({"detail": "Task not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+
+
+class PriorityViewSet(viewsets.ModelViewSet):
+    queryset = Priority.objects.all()
+    serializer_class = PrioritySerializer
+    permission_classes = [IsAuthenticated]
+
+
+class TaskViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        return self.queryset.filter(owner=self.request.user)
 
 
 class RegisterView(APIView):
@@ -52,12 +96,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 
 class SettingsViewSet(viewsets.ModelViewSet):
-    # Adjust the queryset based on your requirements
     queryset = Settings.objects.all()
-    serializer_class = SettingsSerializer  #
+    serializer_class = SettingsSerializer
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        # Optionally assign the owner or any other logic during the creation of settings
-        # Uncomment if your Settings model has an 'owner' field
         serializer.save(owner=self.request.user)
