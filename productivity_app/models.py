@@ -40,6 +40,11 @@ class Task(models.Model):
         'pending', 'Pending'), ('in progress', 'In Progress'), ('completed', 'Completed')])
     assigned_users = models.ManyToManyField(
         User, related_name='assigned_tasks')
+    # attachments = models.ManyToManyField(
+    #     'Attachment',
+    #     related_name='tasks',  # <- This might need to be changed
+    #     blank=True
+    # )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, null=True)  # Allow nulls
     file = models.FileField(upload_to='attachments/', blank=True, null=True)
@@ -66,7 +71,6 @@ class Settings(models.Model):
 
 
 class Attachment(models.Model):
-    # define your fields here
     file = models.FileField(upload_to='attachments/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
