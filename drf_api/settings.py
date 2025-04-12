@@ -14,6 +14,9 @@ from datetime import timedelta
 from pathlib import Path
 import os
 import dj_database_url
+from urllib.parse import urlparse
+
+url = urlparse(os.environ.get("DATABASE_URL"))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -191,6 +194,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',  # Default permission class
     ),
 }
+
+AUTH_USER_MODEL = 'auth.User'
 
 # Simple JWT settings (optional)
 
