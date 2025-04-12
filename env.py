@@ -11,6 +11,6 @@ os.environ['CLOUDINARY_URL'] = "cloudinary://641477698697777:wBLMQwXop1dNYwX9Pg9
 
 os.environ['DEV'] = '1'
 
-os.environ['DATABASE_URL'] = "postgresql://neondb_owner:npg_ZM1uJgwao5Qf@ep-round-violet-a2uhsauy.eu-central-1.aws.neon.tech/stank_quake_sniff_187384"
+os.environ['DATABASE_URL'] = "postgresql: // neondb_owner: npg_ZM1uJgwao5Qf@ep-round-violet-a2uhsauy.eu-central-1.aws.neon.tech/tiger_woven_lying_615597"
 
 os.environ['SECRET_KEY'] = "Dh*R'zf2?_%j))J{G@JiG.=?FVBK8_]K0L1?P{E,;Nt;%@*a?gR1w6RV+>ez|.3"

@@ -14,6 +14,7 @@ from datetime import timedelta
 from pathlib import Path
 import os
 import dj_database_url
+
 from urllib.parse import urlparse
 
 url = urlparse(os.environ.get("DATABASE_URL"))
@@ -26,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the  key used in production secret!
-SECRET_KEY = "django-insecure-rgzuga)i(#bg4#&^drkufljq(h)&y=w3ut_@src4&#lk6b#i74"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEV' in os.environ
