@@ -67,7 +67,7 @@ class Settings(models.Model):
     notifications_enabled = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.some_field
+        return self.user.name
 
 
 class Attachment(models.Model):
