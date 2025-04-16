@@ -175,5 +175,3 @@ cython_debug/
 env.py
 *.iml
 vent
-.venv
-*.py[cod]
