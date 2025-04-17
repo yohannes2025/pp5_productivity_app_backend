@@ -1,5 +1,4 @@
 # views.py
-from rest_framework import viewsets, permissions
 from .models import Category, Priority, TaskStatus, Task, UserProfile, Settings
 from .serializers import CategorySerializer, PrioritySerializer, TaskStatusSerializer, TaskSerializer, ProfileSerializer, UserSerializer, SettingsSerializer
 from rest_framework.permissions import IsAuthenticated
@@ -8,7 +7,6 @@ from rest_framework import status, viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
-from django.shortcuts import get_object_or_404
 
 
 class TaskStatusViewSet(viewsets.ModelViewSet):
@@ -26,7 +24,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
     def get_queryset(self):
-        # Filter tasks to only return those owned by the authenticated user
+        # Filter takes to only return those owned by the authenticated user
         return self.queryset.filter(owner=self.request.user)
 
     def update(self, request, *args, **kwargs):
@@ -81,6 +79,7 @@ class RegisterView(APIView):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class SettingsViewSet(viewsets.ModelViewSet):
