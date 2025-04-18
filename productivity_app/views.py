@@ -97,6 +97,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from .settigns import (
+    JWT_AUTH_COOKIE, JWT_AUTH_REFRESH_COOKIE, JWT_AUTH_SAMESITE, JWT_AUTH_SECURE, JWT_AUTH_HTTP_ONLY
+)
 
 
 class TaskStatusViewSet(viewsets.ModelViewSet):
