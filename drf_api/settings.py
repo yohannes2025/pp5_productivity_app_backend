@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-'''
+
 from datetime import timedelta
 from pathlib import Path
 import os
@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-rgzuga)i(#bg4#&^drkufljq(h)&y=w3ut_@src4&#lk6b#i74"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = 'DEV' in os.environ
+# DEBUG = 'DEV' in os.environ
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'productivity_app.herokuapp.com']
@@ -217,6 +217,7 @@ AUTH_USER_MODEL = 'auth.User'
 # ACCOUNT_LOGOUT_ON_GET = True
 # ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 
+
 '''
 
 import os
@@ -335,3 +336,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000'
 ]
+
+'''''
