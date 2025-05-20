@@ -1,5 +1,7 @@
 # 📅 Productivity App Project
 
+![productivity_app](staticfiles/build/static/images/productivity_app.png)
+
 ## Table of contents
 
 * [Project goals](#project-goals)
